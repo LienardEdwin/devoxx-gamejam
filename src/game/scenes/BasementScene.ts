@@ -20,6 +20,7 @@ export class BasementScene extends BaseFloorScene {
     }
 
     protected buildLevel(): void {
+        this.footstepType = 'metal';
         this.trenchWalls = this.physics.add.staticGroup();
 
         this.drawAtmosphere();
@@ -44,13 +45,13 @@ export class BasementScene extends BaseFloorScene {
         this.addTransitionZone(462, 32, 100, 40, 'RDC ↑', 0x4466aa, 'HouseScene');
 
         // Zone 1 (above trench 1: y≈50–220)
-        this.addMonster([{ x: 100, y: 150 }, { x: 900, y: 150 }, { x: 900, y: 200 }, { x: 100, y: 200 }], 38, 72, 'rat', true);
+        this.addMonster([{ x: 100, y: 150 }, { x: 900, y: 150 }, { x: 900, y: 200 }, { x: 100, y: 200 }], 38, 72, 'rat', false).setDisplaySize(52, 52).setDefaultFlip(true, true);
 
         // Zone 2 (between trenches: y≈275–420)
-        this.addMonster([{ x: 150, y: 320 }, { x: 850, y: 320 }, { x: 850, y: 400 }, { x: 150, y: 400 }], 42, 78, 'rat2', true).setScale(0.9);
+        this.addMonster([{ x: 150, y: 320 }, { x: 850, y: 320 }, { x: 850, y: 400 }, { x: 150, y: 400 }], 42, 78, 'rat2', false).setDisplaySize(52, 52).setDefaultFlip(true, true);
 
         // Zone 3 (below trench 2: y≈475–720)
-        this.addMonster([{ x: 200, y: 530 }, { x: 800, y: 530 }, { x: 800, y: 660 }, { x: 200, y: 660 }], 36, 68, 'rat2', true);
+        this.addMonster([{ x: 200, y: 530 }, { x: 800, y: 530 }, { x: 800, y: 660 }, { x: 200, y: 660 }], 36, 68, 'rat2', false).setDisplaySize(52, 52).setDefaultFlip(true, true);
     }
 
     protected setupCollisions(): void {

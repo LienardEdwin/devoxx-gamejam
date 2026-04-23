@@ -4,6 +4,7 @@ import { Monster } from '../objects/Monster';
 import { HUD } from '../objects/HUD';
 import { MapBuilder } from '../utils/MapBuilder';
 import { EventBus } from '../EventBus';
+import { playFootstep, FootstepType } from '../utils/SoundUtils';
 
 export abstract class BaseFloorScene extends Phaser.Scene {
     protected player!: Player;
@@ -11,6 +12,9 @@ export abstract class BaseFloorScene extends Phaser.Scene {
     protected walls!: Phaser.Physics.Arcade.StaticGroup;
     protected monsters: Monster[] = [];
     protected wallGfx!: Phaser.GameObjects.Graphics;
+    protected footstepType: FootstepType = 'wood';
+
+    private footstepCooldown: number = 0;
 
     private transitionZones: {
         x: number; y: number; w: number; h: number;
@@ -73,6 +77,17 @@ export abstract class BaseFloorScene extends Phaser.Scene {
         this.checkTransitions();
         this.checkKeyPickups();
         this.checkSlowZones();
+        this.updateFootsteps();
+    }
+
+    private updateFootsteps(): void {
+        const body = this.player.body as Phaser.Physics.Arcade.Body;
+        const moving = Math.abs(body.velocity.x) > 8 || Math.abs(body.velocity.y) > 8;
+        this.footstepCooldown -= this.game.loop.delta;
+        if (moving && this.footstepCooldown <= 0) {
+            this.footstepCooldown = 380;
+            playFootstep(this, this.footstepType);
+        }
     }
 
     private checkSlowZones(): void {
@@ -173,6 +188,7 @@ export abstract class BaseFloorScene extends Phaser.Scene {
         if (this.game.registry.get(registryKey)) return;
 
         const keySprite = this.add.image(x, y, 'key');
+        keySprite.setDisplaySize(24, 24);
         keySprite.setDepth(2);
 
         this.tweens.add({

@@ -9,6 +9,8 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     private detectionRadius: number;
     private chasing: boolean = false;
     private faceMovement: boolean;
+    private defaultFlipX: boolean = false;
+    private defaultFlipY: boolean = false;
 
     constructor(
         scene: Phaser.Scene,
@@ -25,6 +27,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setDepth(3);
+        this.setDisplaySize(32, 48);
         (this.body as Phaser.Physics.Arcade.Body).setSize(24, 36);
 
         this.waypoints = waypoints.length > 0 ? waypoints : [{ x, y }];
@@ -55,12 +58,19 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
     private applyOrientation(angle: number): void {
         if (this.faceMovement) {
-            // Sprite is drawn facing left (angle=π), so offset by -π to align
             this.setRotation(angle - Math.PI);
             this.setFlipX(false);
         } else {
-            this.setFlipX(Math.cos(angle) < 0);
+            const movingLeft = Math.cos(angle) < 0;
+            this.setFlipX(this.defaultFlipX ? !movingLeft : movingLeft);
         }
+    }
+
+    setDefaultFlip(flipX: boolean, flipY: boolean): this {
+        this.defaultFlipX = flipX;
+        this.defaultFlipY = flipY;
+        this.setFlipY(flipY);
+        return this;
     }
 
     private patrol(body: Phaser.Physics.Arcade.Body): void {

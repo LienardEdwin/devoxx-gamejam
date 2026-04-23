@@ -1,5 +1,6 @@
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
+import { playREClick } from '../utils/SoundUtils';
 
 export class GameOver extends Scene {
     constructor() {
@@ -63,6 +64,7 @@ export class GameOver extends Scene {
         btn.on('pointerover', () => btn.setColor('#cc0000'));
         btn.on('pointerout', () => btn.setColor('#ffffff'));
         btn.on('pointerdown', () => {
+            playREClick(this);
             this.game.registry.set('hearts', 3);
             this.game.registry.set('key_attic', false);
             this.game.registry.set('key_basement', false);

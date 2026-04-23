@@ -16,6 +16,7 @@ export class GardenScene extends BaseFloorScene {
     }
 
     protected buildLevel(): void {
+        this.footstepType = 'dirt';
         // Grass texture lines
         const grassGfx = this.add.graphics();
         grassGfx.setDepth(0);

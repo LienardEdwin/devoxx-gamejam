@@ -1,4 +1,11 @@
 import { Scene } from 'phaser';
+import heroUrl from '../assets/hero.png';
+import ghostUrl from '../assets/ghost.png';
+import spiderUrl from '../assets/spider.png';
+import ratUrl from '../assets/rat.png';
+import skeletonUrl from '../assets/skeleton.png';
+import keyUrl from '../assets/key.png';
+import introUrl from '../assets/intro.png';
 
 export class Preloader extends Scene {
     constructor() {
@@ -24,8 +31,18 @@ export class Preloader extends Scene {
 
     preload() {
         this.load.setPath('assets');
-        // Keep existing assets in case they're referenced elsewhere
         this.load.image('background', 'bg.png');
+
+        // Reset path before loading Vite-imported URLs (setPath would break them)
+        this.load.setPath('');
+        this.load.image('player', heroUrl);
+        this.load.image('monster', ghostUrl);
+        this.load.image('spider', spiderUrl);
+        this.load.image('rat', ratUrl);
+        this.load.image('rat2', ratUrl);
+        this.load.image('skeleton', skeletonUrl);
+        this.load.image('key', keyUrl);
+        this.load.image('intro', introUrl);
     }
 
     create() {
@@ -34,13 +51,6 @@ export class Preloader extends Scene {
     }
 
     private generateTextures(): void {
-        this.generatePlayer();
-        this.generateMonster();
-        this.generateSpider();
-        this.generateRat();
-        this.generateRat2();
-        this.generateSkeleton();
-        this.generateKey();
         this.generateHearts();
         this.generateWall();
         this.generateLight();
@@ -48,375 +58,6 @@ export class Preloader extends Scene {
         this.generateSpiderWeb();
         this.generateTree();
         this.generateTomb();
-    }
-
-    private generatePlayer(): void {
-        // Leon Kennedy (RE4 outfit) — 32×48px pixel art
-        const g = this.make.graphics({ add: false });
-
-        // ── Legs (dark navy tactical pants) ──────────────────────────
-        g.fillStyle(0x1e2a3a);
-        g.fillRect(9,  34, 6, 12);   // left leg
-        g.fillRect(17, 34, 6, 12);   // right leg
-        // Boots (black)
-        g.fillStyle(0x111111);
-        g.fillRect(8,  43, 7, 5);
-        g.fillRect(17, 43, 7, 5);
-        // Boot highlight
-        g.fillStyle(0x2a2a2a);
-        g.fillRect(9, 43, 2, 4);
-        g.fillRect(18, 43, 2, 4);
-
-        // ── Belt ──────────────────────────────────────────────────────
-        g.fillStyle(0x3a2a10);
-        g.fillRect(9, 33, 14, 3);
-        g.fillStyle(0x8a7a40);
-        g.fillRect(14, 33, 4, 3);    // belt buckle
-
-        // ── Jacket (dark brown leather) ───────────────────────────────
-        g.fillStyle(0x3a2810);
-        g.fillRect(8, 16, 16, 18);
-        // Jacket lapels / zipper
-        g.fillStyle(0x2a1a08);
-        g.fillTriangle(14, 16, 16, 16, 15, 26);
-        g.fillTriangle(18, 16, 16, 16, 17, 26);
-        // Jacket highlight (left shoulder)
-        g.fillStyle(0x5a3e20);
-        g.fillRect(8, 16, 4, 10);
-        // Jacket collar
-        g.fillStyle(0x2a1a08);
-        g.fillRect(12, 14, 8, 4);
-
-        // ── Arms ──────────────────────────────────────────────────────
-        // Left arm
-        g.fillStyle(0x3a2810);
-        g.fillRect(4, 17, 5, 14);
-        // Left glove (dark)
-        g.fillStyle(0x1a1208);
-        g.fillRect(4, 29, 5, 5);
-        // Right arm (slightly raised — gun hand)
-        g.fillStyle(0x3a2810);
-        g.fillRect(23, 17, 5, 12);
-        // Right glove
-        g.fillStyle(0x1a1208);
-        g.fillRect(23, 27, 5, 5);
-
-        // ── Neck ──────────────────────────────────────────────────────
-        g.fillStyle(0xc8956a);
-        g.fillRect(14, 12, 4, 5);
-
-        // ── Head ──────────────────────────────────────────────────────
-        g.fillStyle(0xd4a476);
-        g.fillRoundedRect(9, 3, 14, 14, 3);
-
-        // Jaw / chin definition
-        g.fillStyle(0xbf9060);
-        g.fillRect(10, 13, 12, 3);
-
-        // ── Hair (Leon's swept dirty-blonde side part) ─────────────────
-        // Main hair mass — dark blonde
-        g.fillStyle(0x8a6a28);
-        g.fillRect(9, 2, 14, 5);
-        // Side sweep (left side longer)
-        g.fillRect(9, 3, 4, 8);
-        // Hair highlights
-        g.fillStyle(0xaa8a3a);
-        g.fillRect(10, 2, 8, 3);
-        g.fillRect(10, 3, 2, 5);
-        // Dark roots / shadow
-        g.fillStyle(0x6a5018);
-        g.fillRect(9, 2, 14, 2);
-        g.fillRect(20, 3, 3, 5);
-
-        // ── Eyes (intense, slightly furrowed) ─────────────────────────
-        // Brow shadow
-        g.fillStyle(0x7a5030);
-        g.fillRect(11, 8, 4, 2);
-        g.fillRect(17, 8, 4, 2);
-        // Eyes (blue-grey)
-        g.fillStyle(0x4a6a8a);
-        g.fillRect(12, 10, 3, 2);
-        g.fillRect(17, 10, 3, 2);
-        // Pupils
-        g.fillStyle(0x111111);
-        g.fillRect(13, 10, 2, 2);
-        g.fillRect(18, 10, 2, 2);
-        // Eye whites
-        g.fillStyle(0xeeeedd);
-        g.fillRect(12, 10, 1, 2);
-        g.fillRect(17, 10, 1, 2);
-
-        // ── Nose & mouth ──────────────────────────────────────────────
-        g.fillStyle(0xaa7850);
-        g.fillRect(15, 12, 2, 2);   // nose shadow
-        g.fillStyle(0x8a4a30);
-        g.fillRect(14, 14, 4, 1);   // mouth / slight smirk
-
-        // ── Ear ───────────────────────────────────────────────────────
-        g.fillStyle(0xc8906a);
-        g.fillRect(9, 8, 2, 4);
-
-        g.generateTexture('player', 32, 48);
-        g.destroy();
-    }
-
-    private generateMonster(): void {
-        const g = this.make.graphics({ add: false });
-        // Ghost body
-        g.fillStyle(0x33cc66, 0.85);
-        g.fillCircle(16, 12, 14);
-        g.fillRect(2, 12, 28, 26);
-        g.fillStyle(0xff2222);
-        g.fillCircle(10, 11, 4);
-        g.fillCircle(22, 11, 4);
-        g.fillStyle(0x000000);
-        g.fillCircle(10, 11, 2);
-        g.fillCircle(22, 11, 2);
-        g.generateTexture('monster', 32, 44);
-        g.destroy();
-    }
-
-    private generateSpider(): void {
-        // Bigger spider: 64×56px
-        const g = this.make.graphics({ add: false });
-        const cx = 32, cy = 28;
-        // Abdomen (large, round, dark)
-        g.fillStyle(0x110011);
-        g.fillCircle(cx + 6, cy + 4, 18);
-        // Hourglass marking on abdomen
-        g.fillStyle(0xff0000, 0.8);
-        g.fillTriangle(cx + 6, cy - 6, cx + 1, cy + 8, cx + 11, cy + 8);
-        g.fillTriangle(cx + 6, cy + 20, cx + 1, cy + 8, cx + 11, cy + 8);
-        // Cephalothorax
-        g.fillStyle(0x330033);
-        g.fillCircle(cx - 6, cy - 2, 12);
-        // 8 eyes (glowing red — 2 rows)
-        g.fillStyle(0xff2200);
-        for (let i = 0; i < 4; i++) {
-            g.fillCircle(cx - 13 + i * 5, cy - 8, 2.5);
-            g.fillCircle(cx - 11 + i * 5, cy - 3, 2);
-        }
-        // Chelicerae (fangs)
-        g.fillStyle(0x220000);
-        g.fillEllipse(cx - 10, cy + 8, 6, 10);
-        g.fillEllipse(cx - 4, cy + 9, 6, 10);
-        g.fillStyle(0xff2200);
-        g.fillCircle(cx - 10, cy + 13, 2.5);
-        g.fillCircle(cx - 4, cy + 14, 2.5);
-        // 8 hairy legs (thick)
-        g.lineStyle(3, 0x111111, 1);
-        const legAngles = [-145, -115, -75, -45, 35, 65, 105, 135];
-        for (let i = 0; i < 8; i++) {
-            const rad = (legAngles[i] * Math.PI) / 180;
-            const lx = cx - 6 + Math.cos(rad) * 20;
-            const ly = cy - 2 + Math.sin(rad) * 20;
-            g.lineBetween(cx - 6, cy - 2, lx, ly);
-            g.lineStyle(2, 0x221122, 1);
-            g.lineBetween(lx, ly, lx + Math.cos(rad + (i < 4 ? -0.5 : 0.5)) * 16, ly + Math.sin(rad + (i < 4 ? -0.5 : 0.5)) * 12);
-            g.lineStyle(3, 0x111111, 1);
-        }
-        g.generateTexture('spider', 64, 56);
-        g.destroy();
-    }
-
-    private generateRat(): void {
-        // Scary mutant rat: 60×44px, hunched, big teeth, glowing eyes
-        const g = this.make.graphics({ add: false });
-        // Body (hunched, larger)
-        g.fillStyle(0x443322);
-        g.fillEllipse(34, 24, 38, 26);
-        // Mangy fur texture (darker patches)
-        g.fillStyle(0x332211);
-        g.fillEllipse(28, 20, 18, 12);
-        g.fillEllipse(42, 28, 14, 10);
-        // Head (bigger, meaner)
-        g.fillStyle(0x554433);
-        g.fillCircle(12, 22, 13);
-        // Snout (elongated, rat-like)
-        g.fillStyle(0x775544);
-        g.fillEllipse(3, 23, 14, 9);
-        // Glowing red eyes
-        g.fillStyle(0xff0000);
-        g.fillCircle(9, 16, 4);
-        g.fillStyle(0xff6600, 0.6);
-        g.fillCircle(9, 16, 6); // glow halo
-        g.fillStyle(0x000000);
-        g.fillCircle(9, 16, 2);
-        // Scar over eye
-        g.lineStyle(1, 0x221100, 1);
-        g.lineBetween(6, 12, 12, 18);
-        // Bared teeth (white fangs)
-        g.fillStyle(0xeeeedd);
-        g.fillRect(2, 24, 4, 5);
-        g.fillRect(7, 24, 3, 4);
-        g.fillStyle(0xffffcc);
-        g.fillTriangle(2, 24, 5, 24, 3, 30); // big fang
-        // Ear (torn)
-        g.fillStyle(0x443322);
-        g.fillEllipse(18, 9, 12, 14);
-        g.fillStyle(0x221111);
-        g.fillEllipse(18, 10, 7, 9);
-        // Claws (front)
-        g.lineStyle(2, 0x221100, 1);
-        g.lineBetween(0, 28, -3, 32);
-        g.lineBetween(2, 30, 0, 35);
-        // Tail (thick, scarred)
-        g.lineStyle(4, 0x331100, 1);
-        g.lineBetween(52, 24, 58, 16);
-        g.lineStyle(3, 0x221100, 1);
-        g.lineBetween(58, 16, 60, 28);
-        g.generateTexture('rat', 62, 44);
-        g.destroy();
-    }
-
-    private generateRat2(): void {
-        // Giant sewer rat — 76×54px, mutated, slime-covered
-        const g = this.make.graphics({ add: false });
-
-        // Shadow
-        g.fillStyle(0x000000, 0.3);
-        g.fillEllipse(40, 52, 60, 10);
-
-        // Green slime drips (behind body)
-        g.fillStyle(0x336600, 0.7);
-        g.fillEllipse(30, 36, 8, 14);
-        g.fillEllipse(46, 40, 6, 12);
-        g.fillEllipse(56, 30, 5, 10);
-
-        // Main body — massive, hunched
-        g.fillStyle(0x4a3d2e);
-        g.fillEllipse(42, 28, 50, 34);
-        // Fur texture — darker patches
-        g.fillStyle(0x362c1e);
-        g.fillEllipse(36, 22, 22, 14);
-        g.fillEllipse(52, 32, 18, 12);
-        g.fillStyle(0x5a4a38);
-        g.fillEllipse(44, 34, 20, 10);
-
-        // Green slime on body
-        g.fillStyle(0x44aa00, 0.55);
-        g.fillEllipse(38, 20, 10, 6);
-        g.fillEllipse(50, 28, 8, 5);
-
-        // Head — wide, flat snout
-        g.fillStyle(0x5a4a38);
-        g.fillCircle(14, 26, 14);
-        // Snout
-        g.fillStyle(0x7a6050);
-        g.fillEllipse(4, 28, 16, 10);
-        // Nostrils
-        g.fillStyle(0x220000);
-        g.fillCircle(2, 27, 1.5);
-        g.fillCircle(6, 28, 1.5);
-
-        // 4 red eyes (mutated — 2 pairs)
-        const eyes = [{ x: 10, y: 18 }, { x: 17, y: 16 }, { x: 10, y: 24 }, { x: 17, y: 23 }];
-        for (const e of eyes) {
-            g.fillStyle(0xff3300, 0.5);
-            g.fillCircle(e.x, e.y, 4.5);  // glow
-            g.fillStyle(0xff0000);
-            g.fillCircle(e.x, e.y, 2.5);
-            g.fillStyle(0x000000);
-            g.fillCircle(e.x, e.y, 1.2);
-        }
-
-        // Torn ear
-        g.fillStyle(0x4a3d2e);
-        g.fillEllipse(22, 10, 14, 18);
-        g.fillStyle(0x1a0505);
-        g.fillEllipse(22, 11, 8, 11);
-        // Tear in ear
-        g.lineStyle(1.5, 0x220000);
-        g.lineBetween(20, 6, 24, 14);
-
-        // Second smaller ear (back)
-        g.fillStyle(0x3a2d1e);
-        g.fillEllipse(30, 8, 10, 12);
-
-        // Huge curved incisors
-        g.fillStyle(0xdddd88);
-        g.fillTriangle(0, 28, 5, 28, 2, 38);
-        g.fillTriangle(6, 28, 11, 28, 8, 36);
-        g.fillStyle(0xaaaa44);
-        g.fillRect(1, 28, 3, 4);
-        g.fillRect(7, 28, 3, 4);
-
-        // Front claws (thick)
-        g.lineStyle(2.5, 0x1a1000);
-        g.lineBetween(0, 34, -3, 40);
-        g.lineBetween(3, 36, 1, 43);
-        g.lineBetween(7, 36, 6, 42);
-
-        // Back haunches (raised)
-        g.fillStyle(0x4a3d2e);
-        g.fillEllipse(64, 22, 20, 26);
-        g.fillStyle(0x362c1e);
-        g.fillEllipse(64, 18, 12, 14);
-
-        // Tail — thick, segmented, green-tinged
-        g.lineStyle(5, 0x3a2a1a);
-        g.lineBetween(66, 28, 73, 18);
-        g.lineStyle(4, 0x4a6622);
-        g.lineBetween(73, 18, 75, 32);
-        g.lineStyle(3, 0x3a5010);
-        g.lineBetween(75, 32, 74, 44);
-        // Tail segments
-        g.lineStyle(1, 0x223300, 0.7);
-        for (let i = 0; i < 5; i++) {
-            g.lineBetween(68 + i * 1.5, 25 + i * 3, 70 + i * 1.5, 26 + i * 3);
-        }
-
-        g.generateTexture('rat2', 76, 54);
-        g.destroy();
-    }
-
-    private generateSkeleton(): void {
-        const g = this.make.graphics({ add: false });
-        // Skull
-        g.fillStyle(0xeeeecc);
-        g.fillCircle(16, 10, 10);
-        // Eye sockets
-        g.fillStyle(0x000000);
-        g.fillCircle(11, 9, 3.5);
-        g.fillCircle(21, 9, 3.5);
-        // Jaw
-        g.fillStyle(0xeeeecc);
-        g.fillRect(8, 16, 16, 8);
-        g.fillStyle(0x000000);
-        g.fillRect(10, 18, 3, 5);
-        g.fillRect(15, 18, 3, 5);
-        g.fillRect(20, 18, 3, 5);
-        // Spine / ribcage
-        g.fillStyle(0xeeeecc);
-        g.fillRect(13, 24, 6, 18); // spine
-        g.fillRect(6, 26, 20, 3);  // rib 1
-        g.fillRect(6, 31, 20, 3);  // rib 2
-        g.fillRect(7, 36, 18, 3);  // rib 3
-        // Arms
-        g.fillRect(2, 26, 5, 16);
-        g.fillRect(25, 26, 5, 16);
-        // Legs
-        g.fillRect(9, 42, 5, 16);
-        g.fillRect(18, 42, 5, 16);
-        g.generateTexture('skeleton', 32, 60);
-        g.destroy();
-    }
-
-    private generateKey(): void {
-        const g = this.make.graphics({ add: false });
-        g.fillStyle(0xffcc00);
-        // Key ring
-        g.fillCircle(10, 12, 9);
-        g.fillStyle(0x000000);
-        g.fillCircle(10, 12, 5);
-        g.fillStyle(0xffcc00);
-        // Key shaft
-        g.fillRect(18, 9, 22, 6);
-        // Teeth
-        g.fillRect(32, 15, 5, 6);
-        g.fillRect(38, 15, 5, 5);
-        g.generateTexture('key', 48, 28);
-        g.destroy();
     }
 
     private generateHearts(): void {

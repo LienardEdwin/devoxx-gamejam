@@ -14,6 +14,7 @@ export class AtticScene extends BaseFloorScene {
     }
 
     protected buildLevel(): void {
+        this.footstepType = 'creak';
         // No obstacles — open attic, only webs slow the player
 
         // Wooden beams (decorative only, no physics)
@@ -48,12 +49,15 @@ export class AtticScene extends BaseFloorScene {
         // Return to house (bottom center)
         this.addTransitionZone(462, 696, 100, 40, 'RDC ↓', 0x4466aa, 'HouseScene');
 
-        // Spiders — rotate to always face movement direction
-        this.addMonster([
+        // Spiders — flip horizontally based on movement direction
+        const spider1 = this.addMonster([
             { x: 150, y: 250 }, { x: 870, y: 250 }
-        ], 30, 60, 'spider', true).setScale(1.6);
-        this.addMonster([
+        ], 30, 60, 'spider', false);
+        spider1.setDisplaySize(48, 72);
+
+        const spider2 = this.addMonster([
             { x: 300, y: 500 }, { x: 700, y: 500 }, { x: 700, y: 650 }, { x: 300, y: 650 }
-        ], 28, 55, 'spider', true).setScale(1.8);
+        ], 28, 55, 'spider', false);
+        spider2.setDisplaySize(56, 84);
     }
 }
